@@ -1,0 +1,109 @@
+:root {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #0f1720;
+  background: #f5f7fb;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f7fb;
+}
+
+.container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 16px 32px;
+}
+
+h1 {
+  margin: 0 0 4px 0;
+}
+
+.muted {
+  color: #4f6475;
+  font-size: 14px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 32, 0.06);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #cfd8e3;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: 2px solid #4c8bf5;
+  border-color: #4c8bf5;
+}
+
+button[type="submit"],
+button[type="button"] {
+  background: #4c8bf5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button[type="button"] {
+  background: #eef1f7;
+  color: #0f1720;
+  border: 1px solid #d7dee7;
+}
+
+button:hover {
+  filter: brightness(0.97);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.output {
+  background: #0b1220;
+  color: #e6edf7;
+  min-height: 240px;
+  padding: 12px;
+  border-radius: 6px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: "Cascadia Code", Menlo, monospace;
+  font-size: 13px;
+  margin: 0;
+}

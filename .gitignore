@@ -1,0 +1,14 @@
+# Go build artifacts
+/dist/
+*.exe
+*.exe~
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Go coverage / debug
+*.out
+*.test

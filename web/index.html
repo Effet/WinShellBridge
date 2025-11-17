@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WinShellBridge</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>WinShellBridge</h1>
+      <p class="muted">Run commands from your browser or REST API. UI listens on <code>127.0.0.1</code> so tunnel it via SSH when needed.</p>
+    </header>
+
+    <section class="card">
+      <form id="run-form">
+        <label for="cmdline">Command line</label>
+        <input id="cmdline" name="cmdline" type="text" placeholder="notepad.exe" autocomplete="off" />
+
+        <div class="grid">
+          <div>
+            <label for="workdir">Working directory (optional)</label>
+            <input id="workdir" name="workdir" type="text" placeholder="C:\\" autocomplete="off" />
+          </div>
+          <div>
+            <label for="timeout">Timeout (seconds, optional)</label>
+            <input id="timeout" name="timeout" type="number" min="0" placeholder="0 for none" />
+          </div>
+        </div>
+
+        <button type="submit">Run</button>
+        <span id="status" class="muted"></span>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="output-header">
+        <span>Output</span>
+        <button id="clear" type="button">Clear</button>
+      </div>
+      <pre id="output" class="output" aria-live="polite"></pre>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
