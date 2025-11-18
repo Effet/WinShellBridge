@@ -2,6 +2,7 @@ const form = document.getElementById("run-form");
 const cmdlineInput = document.getElementById("cmdline");
 const workdirInput = document.getElementById("workdir");
 const timeoutInput = document.getElementById("timeout");
+const backgroundInput = document.getElementById("background");
 const outputEl = document.getElementById("output");
 const statusEl = document.getElementById("status");
 const clearBtn = document.getElementById("clear");
@@ -30,6 +31,7 @@ form.addEventListener("submit", async (event) => {
   if (wd) payload.workdir = wd;
   const timeout = parseInt(timeoutInput.value, 10);
   if (!Number.isNaN(timeout) && timeout > 0) payload.timeout_sec = timeout;
+   if (backgroundInput && backgroundInput.checked) payload.background = true;
 
   outputEl.textContent = `$ ${cmdline}\n`;
   setStatus("Running...");
@@ -44,6 +46,14 @@ form.addEventListener("submit", async (event) => {
       const text = await resp.text();
       outputEl.textContent += `Error: ${text}`;
       setStatus(`HTTP ${resp.status}`);
+      return;
+    }
+
+    const ct = resp.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
+      const data = await resp.json();
+      outputEl.textContent += `Background started. PID: ${data.pid ?? "?"}\nTimeout: ${data.timeout_sec ?? 0}s\n`;
+      setStatus("Started (background)");
       return;
     }
 
