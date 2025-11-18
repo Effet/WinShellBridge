@@ -5,6 +5,11 @@ const timeoutInput = document.getElementById("timeout");
 const outputEl = document.getElementById("output");
 const statusEl = document.getElementById("status");
 const clearBtn = document.getElementById("clear");
+const bindInfo = document.getElementById("bind-info");
+
+if (bindInfo) {
+  bindInfo.textContent = window.location.host || "this host";
+}
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
