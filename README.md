@@ -14,7 +14,8 @@ go run . --open-ui   # starts on http://127.0.0.1:8088
 ```
 
 Flags:
-- `--port 9000` bind to custom port (still 127.0.0.1).
+- `--host 0.0.0.0` bind to all interfaces (default 127.0.0.1; be sure to secure it).
+- `--port 9000` bind to custom port.
 - `--no-autostart` skip writing the registry entry.
 - `--open-ui` open the browser on start.
 
@@ -48,8 +49,8 @@ You can also run `GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-
 Response: `text/plain`, streaming combined stdout/stderr. On non-zero exit it appends a line `[exit error: ...]`.
 
 ## Security
-- The server only binds `127.0.0.1`; for remote use, SSH port-forward (`ssh -L 8088:127.0.0.1:8088 user@host`).
-- Add authentication/whitelisting before exposing beyond localhost; current build is minimal.
+- Default bind is `127.0.0.1`. If you set `--host 0.0.0.0`, ensure you are on a trusted network or place it behind a reverse proxy/VPN and add auth/whitelisting.
+- For remote use without binding wide, prefer SSH port-forward (`ssh -L 8088:127.0.0.1:8088 user@host`).
 
 ## GitHub Actions release
 A workflow builds the Windows binary on tags (or manual dispatch) and uploads:

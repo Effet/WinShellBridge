@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,11 +15,12 @@ import (
 
 func main() {
 	port := flag.Int("port", 8088, "port to bind on 127.0.0.1")
+	host := flag.String("host", "127.0.0.1", "host/IP to bind (set to 0.0.0.0 to listen on all interfaces)")
 	disableAutoStart := flag.Bool("no-autostart", false, "do not register HKCU Run on startup")
 	openUI := flag.Bool("open-ui", false, "open web UI in the default browser on start")
 	flag.Parse()
 
-	addr := fmt.Sprintf("127.0.0.1:%d", *port)
+	addr := net.JoinHostPort(*host, fmt.Sprintf("%d", *port))
 	if !*disableAutoStart {
 		if err := EnsureAutoStart(); err != nil {
 			log.Printf("autostart: %v", err)
@@ -57,13 +59,19 @@ func main() {
 		systrayQuit()
 	}()
 
+	openHost := *host
+	if openHost == "" || openHost == "0.0.0.0" || openHost == "::" {
+		openHost = "127.0.0.1"
+	}
+	openURL := "http://" + net.JoinHostPort(openHost, fmt.Sprintf("%d", *port))
+
 	if *openUI {
-		go openBrowser("http://" + addr)
+		go openBrowser(openURL)
 	}
 
 	runTray(trayConfig{
 		address:      addr,
-		openBrowser:  func() { openBrowser("http://" + addr) },
+		openBrowser:  func() { openBrowser(openURL) },
 		shutdown:     shutdown,
 		shutdownChan: quitFromSignal,
 	})
