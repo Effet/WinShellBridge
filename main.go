@@ -14,11 +14,35 @@ import (
 )
 
 func main() {
+	configPath := flag.String("config", defaultConfigPath(), "path to JSON config file")
 	port := flag.Int("port", 8088, "port to bind on 127.0.0.1")
 	host := flag.String("host", "127.0.0.1", "host/IP to bind (set to 0.0.0.0 to listen on all interfaces)")
 	disableAutoStart := flag.Bool("no-autostart", false, "do not register HKCU Run on startup")
 	openUI := flag.Bool("open-ui", false, "open web UI in the default browser on start")
 	flag.Parse()
+
+	visited := map[string]bool{}
+	flag.CommandLine.Visit(func(f *flag.Flag) {
+		visited[f.Name] = true
+	})
+
+	if cfg, err := loadConfig(*configPath); err != nil {
+		log.Printf("config load failed: %v", err)
+	} else if cfg != nil {
+		if cfg.Host != "" && !visited["host"] {
+			*host = cfg.Host
+		}
+		if cfg.Port != 0 && !visited["port"] {
+			*port = cfg.Port
+		}
+		if cfg.Autostart != nil && !visited["no-autostart"] {
+			*disableAutoStart = !*cfg.Autostart
+		}
+		if cfg.OpenUI != nil && !visited["open-ui"] {
+			*openUI = *cfg.OpenUI
+		}
+		log.Printf("config loaded from %s", *configPath)
+	}
 
 	addr := net.JoinHostPort(*host, fmt.Sprintf("%d", *port))
 	if !*disableAutoStart {

@@ -14,6 +14,7 @@ go run . --open-ui   # starts on http://127.0.0.1:8088
 ```
 
 Flags:
+- `--config /path/to/config.json` set config file (defaults to `%APPDATA%\WinShellBridge\config.json` on Windows, `~/.config/WinShellBridge/config.json` elsewhere).
 - `--host 0.0.0.0` bind to all interfaces (default 127.0.0.1; be sure to secure it).
 - `--port 9000` bind to custom port.
 - `--no-autostart` skip writing the registry entry.
@@ -47,6 +48,20 @@ You can also run `GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-
 }
 ```
 Response: `text/plain`, streaming combined stdout/stderr. On non-zero exit it appends a line `[exit error: ...]`.
+
+## Config file
+Default path: `%APPDATA%\WinShellBridge\config.json` on Windows, or `~/.config/WinShellBridge/config.json` elsewhere. Override with `--config`.
+
+Example:
+```json
+{
+  "host": "0.0.0.0",
+  "port": 9000,
+  "autostart": false,
+  "open_ui": true
+}
+```
+Flag values take precedence when provided.
 
 ## Security
 - Default bind is `127.0.0.1`. If you set `--host 0.0.0.0`, ensure you are on a trusted network or place it behind a reverse proxy/VPN and add auth/whitelisting.
