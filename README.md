@@ -44,10 +44,16 @@ You can also run `GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-
   "cmd": "notepad.exe",
   "args": ["README.md"],
   "workdir": "C:\\Users\\me",
-  "timeout_sec": 120
+  "timeout_sec": 120,
+  "background": false
 }
 ```
 Response: `text/plain`, streaming combined stdout/stderr. On non-zero exit it appends a line `[exit error: ...]`.
+
+Background mode:
+- Set `"background": true` to start the process and return immediately with JSON (`202 Accepted`) containing the PID. Output is discarded; the server won’t stream logs.
+- If you set `timeout_sec` with `"background": true`, the process will be terminated when the deadline is hit; omit or set `0` for no timeout.
+- Child processes spawned by your command are not tracked.
 
 ## Config file
 Default path: `%APPDATA%\WinShellBridge\config.json` on Windows, or `~/.config/WinShellBridge/config.json` elsewhere. Override with `--config`.
